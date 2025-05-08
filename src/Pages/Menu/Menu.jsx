@@ -9,6 +9,7 @@ import dessertImg from '../../assets/menu/dessert-bg.jpeg'
 import pizzaImg from '../../assets/menu/pizza-bg.jpg'
 import saladImg from '../../assets/menu/salad-bg.jpg'
 import soupImg from '../../assets/menu/soup-bg.jpg'
+import ratulImg from '../../assets/menu/ratull.jpg'
 
 
 
@@ -32,18 +33,20 @@ const Menu = () => {
                 heading="Todays Offer"
             ></SectionTitle>
             {/* offered menu items */}
-            <MenuCategory
+            {/* <MenuCategory
                 items={offered}
-            ></MenuCategory>
+            ></MenuCategory> */}
             {/* desserts menu items */}
-            <MenuCategory items={desserts} title={"Desserts"} img={dessertImg}></MenuCategory>
+            <MenuCategory items={desserts} title={"desserts"} img={dessertImg}></MenuCategory>
             {/* pizza menu items */}
-            <MenuCategory items={pizza} img={pizzaImg} title={"Pizza"} ></MenuCategory>
+            <MenuCategory items={pizza} img={pizzaImg} title={"pizza"} ></MenuCategory>
             {/* Salad menu items */}
-            <MenuCategory items={salad} img={saladImg} title={"Salad"}
+            <MenuCategory items={salad} img={saladImg} title={"salad"}
             ></MenuCategory>
             {/* Soup menu items */}
-            <MenuCategory items={soup} img={soupImg} title={"Soup"}
+            <MenuCategory items={soup} img={soupImg} title={"soup"}
+            ></MenuCategory>
+            <MenuCategory items={offered} img={ratulImg} title={"offered"}
             ></MenuCategory>
         </div>
     );
