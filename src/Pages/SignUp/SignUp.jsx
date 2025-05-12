@@ -2,11 +2,14 @@ import React, { useContext } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { AuthContext } from '../../Providers/AuthProvider';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const SignUp = () => {
-    const { register, handleSubmit, formState: { errors } } = useForm();
-    const { createuser } = useContext(AuthContext)
+    const { register, handleSubmit, reset, formState: { errors } } = useForm();
+    const { createuser, updatedUserProfile } = useContext(AuthContext)
+    const nagigate = useNavigate()
+
 
     const onSubmit = data => {
         console.log(data);
@@ -14,7 +17,21 @@ const SignUp = () => {
             .then(result => {
                 const loggedUser = result.user;
                 console.log(loggedUser);
+                updatedUserProfile(data.name, data.photoURL)
+                    .then(() => {
+                        console.log('user profile info updated');
+                        reset();
+                        Swal.fire({
+                            position: "top-center",
+                            icon: "success",
+                            title: "User Created Successfully",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        nagigate('/');
 
+                    })
+                    .catch(error => console.log(error))
             })
     };
 
@@ -39,12 +56,16 @@ const SignUp = () => {
                             <fieldset className="fieldset">
                                 <label className="label">Name</label>
                                 <input type="name" name='name' {...register("name", { required: true })} className="input" placeholder="Name" />
-                                {errors.name && <span className='text-red-600 text-sm font-bold'>This field is required</span>}
+                                {errors.name && <span className='text-red-600 text-sm font-bold'>Name is required</span>}
+
+                                <label className="label">Photo URL</label>
+                                <input type="name"  {...register("photoURL", { required: true })} className="input" placeholder="Photo URL" />
+                                {errors.photoURL && <span className='text-red-600 text-sm font-bold'>PhotoURL is required</span>}
 
 
                                 <label className="label">Email</label>
                                 <input type="email" {...register("email", { required: true })} name='email' className="input" placeholder="Email" />
-                                {errors.email && <span className='text-red-600 text-sm font-bold'>This field is required</span>}
+                                {errors.email && <span className='text-red-600 text-sm font-bold'>Email is required</span>}
 
 
                                 <label className="label">Password</label>
