@@ -1,7 +1,9 @@
 import Swal from "sweetalert2";
 import useAuth from "../../Hooks/useAuth";
 import { useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
+import useAxiosSecure from "../../Hooks/useAxiosSecure";
+import useCart from "../../Hooks/useCart";
+
 
 
 const FoodCard = ({ item }) => {
@@ -9,10 +11,12 @@ const FoodCard = ({ item }) => {
     const { user } = useAuth();
     const navigate = useNavigate();
     const location = useLocation()
+    const axiosSecure = useAxiosSecure();
+    const [refetch] = useCart();
 
-    const handleAddToCart = food => {
+    const handleAddToCart = () => {
         if (user && user.email) {
-            console.log(user.email, food);
+            // console.log(user.email, food);
             const cartItem = {
                 menuId: _id,
                 email: user.email,
@@ -21,17 +25,18 @@ const FoodCard = ({ item }) => {
                 price
             }
 
-            axios.post('http://localhost:5000/carts', cartItem)
+            axiosSecure.post('/carts', cartItem)
                 .then(res => {
-                console.log(res.data);
+                    console.log(res.data);
                     if (res.data.insertedId) {
                         Swal.fire({
                             title: `${name}added to your cart...!`,
                             icon: "success",
                             draggable: true
-                          });
-                }
-            })
+                        });
+                        refetch();
+                    }
+                })
         }
         else {
 
@@ -62,7 +67,7 @@ const FoodCard = ({ item }) => {
                 <p>{recipe}</p>
                 <div className="card-actions justify-end">
                     <button
-                        onClick={() => handleAddToCart(item)}
+                        onClick={handleAddToCart}
                         className='my-4 btn btn-outline bg-slate-200 border-0 border-b-4 border-orange-400  mt-4'>Add to Cart</button>
                 </div>
             </div>
